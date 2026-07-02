@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UFT-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+href="file-00000000f0ac7243951db74539d934e7_1"/>
+
+</head>
+
+<body>
+
+    <div class="admin-dashboard">
+
+        <div class="admin-sidebar">
+
+            <div class="admin-logo">
+
+                <h2>A.M.I TECH</h2>
+
+            </div>
+
+            <ul>
+
+                <li class="active">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-video"></i>
+                    Upload Videos
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-book"></i>
+                    Courses
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-users"></i>
+                    Students
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-file"></i>
+                    Materials
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="admin-main">
+
+            <div class="admin-topbar">
+
+                <h1>Admin Dashboard</h1>
+
+                <a href="upload-course.html">
+                    <button class="upload-btn">
+
+                        Upload New Course
+
+                    </button>
+
+                </a>
+
+            </div>
+
+            <div class="admin-stats">
+
+                <div class="admin-card">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <h2>1,250</h2>
+
+                    <p>Total Students</p>
+
+                </div>
+
+                <div class="admin-card">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <h2>45</h2>
+
+                    <p>Total Courses</p>
+
+                </div>
+
+                <div class="admin-card">
+
+                    <i class="fa-solid fa-video"></i>
+
+                    <h2>320</h2>
+
+                    <p>Video Lessons</p>
+                </div>
+
+                <div class="admin-card">
+
+                    <i class="fa-solid fa-dollar-sign"></i>
+
+                    <h2>$12k</h2>
+
+                    <p>Revenue</p>
+
+                </div>
+
+            </div>
+
+            <div class="video-section">
+
+                <div class="section-header">
+
+                    <h2>Recent Uploads</h2>
+
+                </div>
+
+                <div class="video-grid">
+
+                    <div class="video-card">
+
+                        <div class="video-banner">
+
+                            <img src="images/frontend.jpg.png"></i>
+
+                        </div>
+
+                        <div class="video-content">
+
+                            <h3>Frontend Development</h3>
+
+                            <p>HTML & CSS Masterclass</p>
+
+                            <button>Manage Course</button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="video-card">
+
+                        <div class="video-banner ai-video">
+
+                            <img src="images/ai.jpg.png"></i>
+
+                        </div>
+
+                        <div class="video-content">
+
+                            <h3>Artificial Intelligence</h3>
+
+                            <p>Machine Learning Basics</p>
+
+                            <button>Manage Course</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="upload-box">
+
+        <h2>Upload Assignment</h2>
+
+        <input
+        type="text"
+        placeholder="Assignment Title">
+
+        <textarea
+        placeholder="Write assignment questions here"
+        row="6">
+
+    </textarea>
+
+    <button>
+
+        Upload Assignment
+
+    </button>
+
+     <h2>Registered Students</h2>
+
+     <input 
+     type="text"
+     id="searchStudent"
+     placeholder="Search Student...">
+
+    <table border="1" id="studentsTable">
+        <thead>
+              <tr>
+                 <th>No.</th>
+                 <th>Name</th>
+                 <th>Email</th>
+             </tr>
+        </thead>
+
+         <tbody id="studentsBody">
+         </tbody>
+
+    </table>
+
+    </div>
+    
+<script type="module"
+src="admin.js"></script>
+</body>
+
+</html>

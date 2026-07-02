@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Submitted Assingnments</title>
+
+<style>
+
+body{
+    background: #0f172a;
+    color: white;
+    font-family: Arial;
+    padding: 20px;
+}
+
+h1{
+    margin-bottom: 20px;
+}
+
+.assignment{
+    background: #0b1020;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <h1>Submitted Assignments</h1>
+
+    <div id="assignmentsList"></div>
+
+    <script type="module">
+
+        import { initializeApp }
+        from
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        import {
+            getFirestore,
+            collection,
+            getDocs,
+            updateDoc,
+            doc
+        }
+        from
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCcYCySRQGErV3rnmK3xYLlFvUg2sSIejM",
+            authDomain: "ami-tech-academy.firebaseapp.com",
+            projectId: "ami-tech-academy",
+            storageBucket: "ami-tech-academy.firebasestorage.app",
+            messagingSenderId: "543291694831",
+            appId: "1:543291694831:web:7b08ad33e99ee69b16451a",
+            measurementId: "G-1ZZCTV5PP8"
+
+        };
+
+        const app = 
+        initializeApp(firebaseConfig);
+
+        const db = getFirestore(app);
+
+        const assignmentsList = 
+        document.getElementById("assignmentsList");
+
+        console.log("Admin page connected");
+
+        async function loadAssignments(){
+            
+            const querySnapshot = 
+            await
+            getDocs(collection(db,"assignments"));
+
+            console.log(querySnapshot);
+
+            querySnapshot.forEach((doc)=>{
+
+            const data = doc.data();
+
+            assignmentsList.innerHTML += `
+            <div class="assignment">
+
+                <h3>Student Assignment</h3>
+
+                <p><strong>Answer 1:</strong> ${data.answer1}</p>
+
+                <p><strong>Answer 2:</strong> ${data.answer2}</p>
+
+                <p><strong>Answer 3:</strong> ${data.answer3}</p>
+
+                <p><strong>Answer 4:</srong> ${data.answer4}</p>
+
+                    <input
+                    type="number"
+                    id="score-${doc.id}"
+                    placeholder="Enter Score">
+
+                    <button
+                    onclick="saveScore('${doc.id}')">
+
+                    Save Score
+
+                    </button>
+
+                </div>
+                `;
+
+        });
+
+    }
+
+    loadAssignments();
+
+    window.saveScore = async function(id) {
+        
+        const score = 
+        document.getElementById(`score-${id}`).value;
+
+        try{
+
+            await updateDoc(
+
+            doc(db,"assignments",id),
+
+            {
+                score: score
+            }
+
+            );
+
+            alert("Score Saved!");
+
+        }
+
+        catch(error){
+
+            console.log(error);
+
+            alert(error.message);
+        }
+        
+    }
+    </script>
+
+</body>
+</html>

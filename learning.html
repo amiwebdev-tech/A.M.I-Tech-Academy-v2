@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>Learning Page - A.M.I TECH</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        body{
+            margin: 0;
+            font-family: Arial;
+            background: #050816;
+            color: white;
+        }
+
+        .learning-container{
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar{
+            width: 250px;
+            background: #0b1023;
+            padding: 20px;
+        }
+
+        .logo{
+            color: gold;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        .sidebar ul{
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li{
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a{
+            color: white;
+            text-decoration: none;
+        }
+
+        .main-content{
+            flex: 1;
+            padding: 30px;
+        }
+
+        .video-box{
+            width: 100%;
+            height: 500px;
+            background: black;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        video{
+            width: 100%;
+            height: 100%;
+        }
+
+        .course-title{
+            margin-top: 20px;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .lesson-list{
+            margin-top: 30px;
+        }
+
+        .lesson{
+            background: #111936;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+        }
+
+        .lesson:hover{
+            background: #1d2b5e;
+        }
+
+    </style>
+
+    </head>
+
+    <body>
+
+        <div class="learning-container">
+
+            <div class="sidebar">
+
+                <div class="logo">A.M.I TECH</div>
+
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="#">My Courses</a></li>
+                    <li><a href="#">Certificates</a></li>
+                    <li><a href="index.html">Logout</a></li>
+                </ul>
+
+            </div>
+
+            <div class="main-content">
+
+                <div class="lesson-video">
+
+                    <h2>Lesson 1 - Introduction to HTML</h2>
+
+                    <video 
+                    id="video1"
+                    controls
+                    width="100%">
+
+                        <source
+                        src="videos/frontend.mp4/screen-20260526-081009.mp4">
+
+                    </video>
+
+                    <button
+                    id="completeBtn1"
+                    onclick="markComplete('lesson1')"
+                    style="display: none;">
+                    Mark Lesson Complete
+                    </button>
+
+                </div>
+
+                <div class="lesson-video">
+
+                    <h2>Lesson 2 - HTML Structure</h2>
+
+                    <video
+                    id="video2"
+                    controls
+                    width="100%">
+
+                        <source
+                        src="videos/frontend.mp4/lesson 2.mp4">
+
+                    </video>
+
+                    <button
+                    id="completeBtn2"
+                    onclick="markComplete('lesson2')"
+                    style="display: none;">
+                    Mark Lesson Complete
+                    </button>
+
+                    <div class="lesson-video">
+
+                        <h2>lesson 3 - CSS Tutorial</h2>
+
+                        <video
+                        id="video3"
+                        controls
+                        width="100%">
+
+                            <source
+                            src="videos/frontend.mp4/lesson 3.mp4">
+
+                        </video>
+
+                        <button
+                        id="completeBtn3"
+                        onclick="markComplete('lesson3')"
+                        style="display: none;">
+                        Mark Lesson Complete
+                        </button>
+
+        <div class="assignment-section">
+
+            <h2>HTML Assignment</h2>
+
+            <p>
+                1. What does HTML stand for?
+            </p>
+
+            <input
+            type="text"
+            id="answer1"
+            placeholder="Answer 1">
+
+            <p>
+                2. Which tag is used for headings?
+            </p>
+
+            <input
+            type="text"
+            id="answer2"
+            placeholder="Answer 2">
+
+            <p>
+                3. Which tag is used to create a paragraph?
+            </p>
+
+            <input
+            type="text"
+            id="answer3"
+            placeholder="Answer 3">
+
+            <p>
+                4. What does (M) stands for in HTML?
+            </p>
+
+            <input
+            type="text"
+            id="answer4"
+            placeholder="Answer 4">
+
+            <button id="submitBtn">
+
+                Submit Assignment
+
+            </button>
+
+            <a href="certificate.html">
+
+                <button class="certificate-btn">
+
+                    Get Certificate
+
+                </button>
+
+            </a>
+            
+        </div>
+
+        <script type="module">
+
+            import { db, auth }
+            from "./firebase.js";
+
+            import {
+                collection,
+                getDocs,
+                addDoc
+            }
+            from
+            "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+            import {
+                onAuthStateChanged
+            }
+            from
+            "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+            console.log("javaScript Connected");
+
+            const selectedCourse =
+            localStorage.getItem("selectedCourse");
+
+            console.log(
+                "Selected Course:",
+                selectedCourse
+            );
+
+            onAuthStateChanged(auth, async (user) => {
+
+                console.log("user:", user);
+
+                if (!user) {
+                    console.log("No user logged in");
+                    return;
+                }
+
+                await addDoc(
+                    collection(db, "enrollments"),
+                    {
+                        userId: user.uid,
+                        courseTitle: selectedCourse,
+                        enrolledAt: new Date()
+                    }
+                );
+
+                console.log("Enrollment Saved!");
+            });
+
+            const submitBtn = 
+            document.getElementById("submitBtn");
+
+            submitBtn.addEventListener("click", 
+
+            async () => {
+
+                const answer1 =
+                document.getElementById("answer1").value;
+
+                const answer2 = 
+                document.getElementById("answer2").value;
+
+                const answer3 = 
+                document.getElementById("answer3").value;
+
+                const answer4 = 
+                document.getElementById("answer4").value;
+
+                try{
+
+                    await addDoc(
+
+                    collection(db, "assignments"),
+
+                    {
+
+                        answer1: answer1,
+                        answer2: answer2,
+                        answer3: answer3,
+                        answer4: answer4,
+
+                        submittedAt: new Date()
+
+                    }
+
+                    );
+
+                    alert(
+                        "Assignment Submitted Successfully!"
+                    );
+
+                }
+
+                catch(error){
+
+                    console.log(error);
+
+                    alert(
+                        "Submission failed. Check internet or refresh page."
+                    );
+
+                    alert(
+                        "Assignment Submitted Successfully!"
+                    );
+
+                    location.reload();
+
+                }
+
+            });
+            
+            window.markComplete = 
+            async function(lessonId){
+
+                try{
+
+                    await setDoc(
+                        doc(db, "progress", lessonId),
+                        {
+                            completed: true
+                        }
+                    );
+
+                    alert("Lesson completed!");
+
+                }
+
+                catch(error){
+
+                    console.log(error);
+
+                    alert(error.message);
+                }
+            }
+            
+            const video1 =  
+            document.getElementById("video1");
+
+            const completeBtn1 = 
+            document.getElementById("completeBtn1");
+
+            video1.addEventListener("ended", () => {
+
+                completeBtn1.style.display = "block";
+            });
+
+            const video2 = 
+            document.getElementById("video2");
+
+            const completeBtn2 = 
+            document.getElementById("completeBtn2");
+
+            video2.addEventListener("ended", () => {
+
+                completeBtn2.style.display = "block";
+            });
+
+            const video3 = 
+            document.getElementById("video3");
+
+            const completeBtn3 = 
+            document.getElementById("completeBtn3");
+
+            video3.addEventListener("ended", () => {
+
+                completeBtn3.style.display = "block";
+            });
+
+        </script>
+
+    </body>
+</html>

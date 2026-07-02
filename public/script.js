@@ -1,0 +1,1 @@
+console.log("A.M.I TECH WEBSITE Loaded");

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+content="width=device-width,
+initial-scale=1.0">
+
+<title>A.M.I TECH ACADEMY</title>
+
+<link rel="stylesheet"
+href="style.css">
+</head>
+
+<body>
+
+    <h1>My Learning Progress</h1>
+
+    <div class="progress-card">
+
+        <h2 id="percentage">
+            0% Complete
+        </h2>
+
+        <p id="completedText">
+            Lessons Completed: 0/3
+        </p>
+
+        <div id="lessonStatus"></div>
+
+        <div id="certificateSection"></div>
+    
+    </div>
+
+    <script type="module">
+
+        import { db }
+        from "./firebase.js";
+
+        import {
+            collection,
+            getDocs,
+            doc,
+            getDoc
+        }
+
+        from
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        import {
+            getAuth,
+            onAuthStateChanged
+        }
+        from
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        let studentName = "Student";
+
+        const percentage = 
+        document.getElementById("percentage");
+
+        const completedText = 
+        document.getElementById("completedText");
+
+        const lessonStatus = 
+        document.getElementById("lessonStatus");
+
+        const certificateSection = 
+        document.getElementById("certificateSection");
+
+        async function loadProgress() {
+
+            try {
+                const snapshot = await
+                getDocs(collection(db, "progress"));
+
+                const completed = 
+                Number(snapshot?.size || 0);
+
+                const totalLessons = 3
+
+                const percent = totalLessons > 0
+                ? Math.round((completed / totalLessons) * 100)
+                :0;
+
+                percentage.textContent = percent + "% complete";
+
+                completedText.textContent = 
+                "Lessons Completed: " + completed + "/" + totalLessons;
+
+                let html = "";
+
+                for (let i = 1; i <= totalLessons; i++) {
+                    if (completed >= i) {
+                        html += `<p> Lesson ${i} completed</p>`;
+                    }
+                }
+
+                lessonStatus.innerHTML = html;
+
+                if (completed === totalLessons) {
+                    certificateSection.innerHTML = `
+                    <div id="certificate"
+                    class="certificate">
+
+                    <div class="certificate-header">
+
+                        <div class="ami-logo">
+                            <div class="crest">
+                                </div>
+
+                    <h3>A.M.I TECH ACADEMY</h3>
+                    </div>
+
+                    <h2>CERTIFICATE OF COMPLETION</h2>
+
+                    </div>
+
+                        <P class="cert-text">
+                        This certifies that
+                        </p>
+
+                            <h2 class="student-name"
+                            id="certificateName">
+                               ${studentName}
+                            </h2>
+
+                            <p class="cart-text">
+                            has successfully completed the
+                            </p>
+
+                            <h3 class="course-name">
+                            COMPUTER SCIENCE PROGRAM
+                            </h3>
+
+                            <p class="cart-text">
+                            and demonstrated dedication,
+                            innovation and excellence.
+                            </p>
+
+                            <div class="certificate-info">
+
+                                <P class="cert-id">
+                                    Certificate ID: AMI-2026-0001
+                                </p>
+
+                                    <p class="cert-date">
+                                        Date: June 2026
+                                    </p>
+
+                                    </div>
+                                    
+                                    <div class="signatures">
+
+                                        <div>
+                                            ___________________
+                                            <br>
+                                            Founder
+                                            <br>
+                                            Ilekoin Ayo Modupe
+                                        </div>
+
+                                        <div>
+                                            ____________________
+                                            <br>
+                                            Director
+                                            <br>
+                                            Ilekoin Ayo Modupe
+                                        </div>
+
+                                    </div>
+
+                                    <button id="downloadCertificate">
+                                        Download Certificate
+                                    </button>
+
+                                </div>
+                                `;
+                
+
+                    document
+                    .getElementById("downloadCertificate")
+                    .addEventListener("click", () => {
+
+                        const certificate = 
+                        document.getElementById("certificate");
+
+                        window.print();
+
+                    });
+                } else {
+                    certificateSection.innerHTML = "";
+                }
+
+                } catch (error) {
+                    console.error("Error loading progress:", error);
+
+                    percentage.textContent = "0% Complete";
+                    completedText.textContent = "Lessons Completed: 0/3";
+                    lessonStatus.innerHTML = "<p>Error loading progress</p>";
+                }
+            }
+            
+        async function loadStudentName() {
+
+            const auth = getAuth();
+
+            onAuthStateChanged(auth, async (user) => {
+
+                if (!user) {
+                    console.log("No user logged in");
+                    return;
+                }
+
+                console.log("User found:", user.uid);
+
+                const docRef = 
+                doc(db, "users", user.uid);
+
+                const docSnap = await getDoc(docRef);
+
+            console.log("Document exists:",
+            docSnap.exists());
+
+            if (docSnap.exists()) {
+
+                console.log("Name from Firestore:", docSnap.data().name);
+
+                studentName =
+                docSnap.data().name;
+
+                document.getElementById("certificateName") 
+                .innerText = studentName;
+            }
+        });
+        }
+
+        loadProgress();
+        loadStudentName();
+
+    </script>
+
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</html>
